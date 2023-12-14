@@ -28,7 +28,7 @@ if (Qt6_FOUND)
     qt_standard_project_setup()
 endif(Qt6_FOUND)
 
-add_library(qbip39 qbip39.cpp src/dictionaries.cpp include/crypto/qbip39.hpp
+add_library(qbip39  src/dictionaries.cpp include/crypto/qbip39.hpp
     include/crypto/dictionaries.hpp)
 
 add_library(${PROJECT_NAME}::qbip39 ALIAS qbip39)
