@@ -8,6 +8,7 @@
 #include<QIODevice>
 #include<QDataStream>
 #include<QCryptographicHash>
+#include <QPasswordDigestor>
 
 #include"crypto/dictionaries.hpp"
 
@@ -25,7 +26,7 @@ enum Security:quint8
     veryHigh
 };
 
-
+template<Language Tlg=Language::en>
 class Mnemonic
 {
 
@@ -33,15 +34,24 @@ public:
     const QStringList m_words;
     bool isValid()const{return m_words.isEmpty();}
 
-    template<Language Tlg=Language::en>
+
     Mnemonic(Security Tsec=Security::veryHigh):m_words(getWords<Tlg>(getRandomEntropy(Tsec))){};
 
-    template<Language Tlg=Language::en>
-    Mnemonic(QByteArray entropy):m_words(getWords<Tlg>(entropy)){};
-    template<Language Tlg=Language::en>
-    Mnemonic(QStringList words):m_words(checkWords<Tlg>(words)){};
 
-    QByteArray getSeed(const QString& passphrase="") const;
+    Mnemonic(QByteArray entropy):m_words(getWords(entropy)){};
+    Mnemonic(QStringList words):m_words(checkWords(words)){};
+
+    QByteArray getSeed(const QString& passphrase="") const
+    {
+        const auto data=m_words.join(" ").toUtf8();
+        const auto salt=QString("mnemonic"+passphrase).toUtf8();
+        return QPasswordDigestor::deriveKeyPbkdf2(
+            QCryptographicHash::Sha512,
+            data,
+            salt,
+            2048,
+            64);
+    }
 private:
 
     static QByteArray getRandomEntropy(Security sec)
@@ -55,7 +65,6 @@ private:
         }
         return var;
     }
-    template<Language Tlg>
     QStringList checkWords(const QStringList& list)const
     {
         QStringList var;
@@ -72,7 +81,7 @@ private:
         return var;
 
     }
-    template<Language Tlg> QStringList getWords(QByteArray entropy)const
+    QStringList getWords(QByteArray entropy)const
     {
         QStringList var;
         const quint8 size=entropy.size();
@@ -97,7 +106,6 @@ private:
             quint16 index;
             auto catbuffer=QDataStream(&catenation,QIODevice::ReadOnly);
             catbuffer.setByteOrder(QDataStream::BigEndian);
-
 
             if(catenation.size()<2)
             {
