@@ -32,7 +32,7 @@ class Mnemonic
 
 public:
     const QStringList m_words;
-    bool isValid()const{return m_words.isEmpty();}
+    bool isValid()const{return !m_words.isEmpty();}
 
 
     Mnemonic(Security Tsec=Security::veryHigh):m_words(getWords(getRandomEntropy(Tsec))){};
