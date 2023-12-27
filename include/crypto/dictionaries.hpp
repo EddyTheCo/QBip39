@@ -16,7 +16,11 @@ namespace qwords {
 
 enum Language:quint8
 {
-    en
+    en,
+    es,
+    it,
+    ja,
+    ko
 };
 
 
