@@ -1,5 +1,5 @@
 #pragma once
-
+#include <QObject>
 #include <QStringList>
 
 #include <QtCore/QtGlobal>
@@ -13,16 +13,14 @@
 namespace qcrypto {
 namespace qwords {
 
-
 enum Language:quint8
 {
-    en,
-    es,
-    it,
-    ja,
-    ko
+    En,
+    Es,
+    It,
+    Ja,
+    Ko
 };
-
 
 template<Language lg>
 class Dictionary: public QStringList
