@@ -4,16 +4,16 @@ include(${CMAKE_CURRENT_BINARY_DIR}/local_conf.cmake OPTIONAL)
 
 include(FetchContent)
 FetchContent_Declare(
-    ccommon
-    GIT_REPOSITORY https://github.com/EddyTheCo/Common.git
-    GIT_TAG develop
-)
+	ccommon
+	GIT_REPOSITORY https://github.com/EddyTheCo/Common.git
+	GIT_TAG use_IFW
+	)
 FetchContent_MakeAvailable(ccommon)
 version_from_git(
-    LOG       OFF
-    TIMESTAMP "%Y%m%d%H%M%S"
-)
-project(QBip39 VERSION ${VERSION} DESCRIPTION "Mnemonic sentences - Bip-39" LANGUAGES CXX)
+	LOG       OFF
+	TIMESTAMP "%Y%m%d%H%M%S"
+	)
+project(QtBip39 VERSION ${VERSION} DESCRIPTION "Mnemonic sentences - Bip-39" LANGUAGES CXX)
 
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -27,73 +27,79 @@ include(GNUInstallDirs)
 find_package(Qt6 COMPONENTS Core Network )
 
 if (Qt6_FOUND)
-    qt_standard_project_setup()
+	qt_standard_project_setup()
 
 
-    add_library(qbip39  src/dictionaries.cpp include/crypto/qbip39.hpp
-        include/crypto/dictionaries.hpp)
+	add_library(qbip39  src/dictionaries.cpp include/crypto/qbip39.hpp
+		include/crypto/dictionaries.hpp)
 
-    add_library(${PROJECT_NAME}::qbip39 ALIAS qbip39)
+	add_library(${PROJECT_NAME}::qbip39 ALIAS qbip39)
+	set_target_properties(qbip39 PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR})
 
-    target_compile_definitions(qbip39 PRIVATE WINDOWS_QBIP39)
+	target_compile_definitions(qbip39 PRIVATE WINDOWS_QBIP39)
 
-    target_link_libraries(qbip39 PUBLIC  Qt6::Core Qt6::Network)
-
-
-    target_include_directories(qbip39 PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/Esterv>")
+	target_link_libraries(qbip39 PUBLIC  Qt6::Core Qt6::Network)
 
 
-    install(TARGETS qbip39
-        EXPORT ${PROJECT_NAME}-config
-        DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        COMPONENT Qbip39
-    )
-
-install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Esterv/
-    COMPONENT Qbip39
-)
-
-install(EXPORT ${PROJECT_NAME}-config
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-    NAMESPACE ${PROJECT_NAME}::
-    COMPONENT ${PROJECT_NAME}
-)
-include(CMakePackageConfigHelpers)
-configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
-    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-write_basic_package_version_file(
-    "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
-    VERSION ${VERSION}
-    COMPATIBILITY SameMajorVersion
-)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-)
-export(EXPORT ${PROJECT_NAME}-config
-    FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
-)
+	target_include_directories(qbip39 PUBLIC  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+		"$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/Esterv/>")
 
 
-if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
-    set(CPACK_PACKAGE_CONTACT "estervtech")
-    include(CTest)
-    set(CPACK_PACKAGE_FILE_NAME "${PROJECT_NAME}-v${SEMVER}-${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_CXX_COMPILER_ID}")
-    if(NOT BUILD_SHARED_LIBS)
-        set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_FILE_NAME}-static")
-    endif(NOT BUILD_SHARED_LIBS)
-    include(CPack)
-    if(BUILD_TESTING)
-        add_subdirectory(tests)
-    endif(BUILD_TESTING)
-endif()
+	install(TARGETS qbip39
+		EXPORT ${PROJECT_NAME}-config
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}
+		COMPONENT bip39
+		)
+
+	install(DIRECTORY ${CMAKE_CURRENT_LIST_DIR}/include/
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/Esterv/
+		COMPONENT bip39
+		)
+
+	install(EXPORT ${PROJECT_NAME}-config
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+		NAMESPACE ${PROJECT_NAME}::
+		COMPONENT ${PROJECT_NAME}
+		)
+	include(CMakePackageConfigHelpers)
+	configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake"
+		INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+		)
+	write_basic_package_version_file(
+		"${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake"
+		VERSION ${VERSION}
+		COMPATIBILITY SameMajorVersion
+		)
+	install(FILES
+		${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Config.cmake
+		${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}ConfigVersion.cmake
+		DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+		COMPONENT bip39
+		)
+	export(EXPORT ${PROJECT_NAME}-config
+		FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake"
+		)
+
+
+	if(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+		set(cpack_file_name "${PROJECT_NAME}-v${SEMVER}-${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_VERSION}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_CXX_COMPILER_ID}")
+		if(NOT BUILD_SHARED_LIBS)
+			set(cpack_file_name "${cpack_file_name}-static")
+		endif(NOT BUILD_SHARED_LIBS)
+		set(CPACK_PACKAGE_FILE_NAME ${cpack_file_name})
+		include(CPack)
+		include(CPackIFW)
+		cpack_add_component(bip39)
+		cpack_ifw_configure_component(bip39 LICENSES "License" ${CMAKE_CURRENT_SOURCE_DIR}/LICENSE)
+		cpack_ifw_add_repository("Repo" URL "${REPO_URL}/packages/${CMAKE_SYSTEM_NAME}/" )
+		if(BUILD_TESTING)
+			include(CTest)
+			add_subdirectory(tests)
+		endif(BUILD_TESTING)
+	endif(CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 endif(Qt6_FOUND)
 
 if(BUILD_DOCS)
-    build_docs()
+	build_docs()
 endif()
