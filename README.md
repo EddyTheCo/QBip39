@@ -33,12 +33,12 @@ include(FetchContent)
 FetchContent_Declare(
 	QtBip39
 	GIT_REPOSITORY https://github.com/EddyTheCo/QBip39.git
-	GIT_TAG v0.1.1 
-	FIND_PACKAGE_ARGS 0.1 CONFIG  
+	GIT_TAG vMAJOR.MINOR.PATCH 
+	FIND_PACKAGE_ARGS MAJOR.MINOR CONFIG  
 	)
 FetchContent_MakeAvailable(QtBip39)
 
-target_link_libraries(<target> <PRIVATE|PUBLIC|INTERFACE> QtBip39::bip39)
+target_link_libraries(<target> <PRIVATE|PUBLIC|INTERFACE> QtBip39::qbip39)
 ```
 
 ## API reference
