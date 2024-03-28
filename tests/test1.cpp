@@ -18,7 +18,7 @@ void testLanguage(const QJsonArray & vectors)
         auto test=v.toArray();
         auto entropy=QByteArray::fromHex(test.at(0).toString().toUtf8());
         const auto mnemonic=Mnemonic<Tlg>(entropy);
-        const auto str=mnemonic.m_words.join((Tlg==Language::ja)?"\u3000":" ");
+        const auto str=mnemonic.m_words.join((Tlg==Language::Ja)?"\u3000":" ");
         qDebug()<<"from lib:\t"<<str;
         qDebug()<<"from vector:\t"<<test.at(1).toString();
         assert(str==test.at(1).toString());
@@ -42,23 +42,23 @@ int main(int argc, char** argv)
 
     auto englishVectors=root_obj.value("english").toArray();
 
-    testLanguage<Language::en>(englishVectors);
+    testLanguage<Language::En>(englishVectors);
 
     const auto spanishVectors=root_obj.value("spanish").toArray();
 
-    testLanguage<Language::es>(spanishVectors);
+    testLanguage<Language::Es>(spanishVectors);
 
     const auto itlianVectors=root_obj.value("italian").toArray();
 
-    testLanguage<Language::it>(itlianVectors);
+    testLanguage<Language::It>(itlianVectors);
 
     const auto japaneseVectors=root_obj.value("japanese").toArray();
 
-    testLanguage<Language::ja>(japaneseVectors);
+    testLanguage<Language::Ja>(japaneseVectors);
 
     const auto koreanVectors=root_obj.value("korean").toArray();
 
-    testLanguage<Language::ko>(koreanVectors);
+    testLanguage<Language::Ko>(koreanVectors);
 
 	return 0;
 }

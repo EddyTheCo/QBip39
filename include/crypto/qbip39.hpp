@@ -26,7 +26,7 @@ enum Security:quint8
     veryHigh
 };
 
-template<Language Tlg=Language::en>
+template<Language Tlg=Language::En>
 class Mnemonic
 {
 
