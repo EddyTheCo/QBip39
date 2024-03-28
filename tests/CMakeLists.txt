@@ -3,7 +3,7 @@ file(DOWNLOAD "https://raw.githubusercontent.com/trezor/python-mnemonic/master/v
                         "${CMAKE_CURRENT_BINARY_DIR}/vectors.json")
 foreach(app  test1)
 add_executable(${app} ${app}.cpp)
-target_link_libraries(${app} PRIVATE QBip39::qbip39 )
+target_link_libraries(${app} PRIVATE qbip39 )
 add_test(NAME ${app} COMMAND ${app})
 
 if (WIN32 AND BUILD_SHARED_LIBS)

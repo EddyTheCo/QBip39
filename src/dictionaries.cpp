@@ -4,7 +4,7 @@ namespace qcrypto {
 namespace qwords {
 
 
-template<> Dictionary<Language::ko>::Dictionary():QStringList(
+template<> Dictionary<Language::Ko>::Dictionary():QStringList(
         {
          "가격",
          "가끔",
@@ -2055,7 +2055,7 @@ template<> Dictionary<Language::ko>::Dictionary():QStringList(
          "흰색",
          "힘껏"
         }){};
-template<> Dictionary<Language::ja>::Dictionary():QStringList(
+template<> Dictionary<Language::Ja>::Dictionary():QStringList(
         {
          "あいこくしん",
          "あいさつ",
@@ -4106,7 +4106,7 @@ template<> Dictionary<Language::ja>::Dictionary():QStringList(
          "わらう",
          "われる"
         }){};
-template<> Dictionary<Language::it>::Dictionary():QStringList(
+template<> Dictionary<Language::It>::Dictionary():QStringList(
         {
          "abaco",
          "abbaglio",
@@ -6157,7 +6157,7 @@ template<> Dictionary<Language::it>::Dictionary():QStringList(
          "zulu",
          "zuppa"
         }){};
-template<> Dictionary<Language::es>::Dictionary():QStringList(
+template<> Dictionary<Language::Es>::Dictionary():QStringList(
         {
          "ábaco",
          "abdomen",
@@ -8209,7 +8209,7 @@ template<> Dictionary<Language::es>::Dictionary():QStringList(
          "zurdo"
         }){};
 
-template<> Dictionary<Language::en>::Dictionary():QStringList(
+template<> Dictionary<Language::En>::Dictionary():QStringList(
         {
          "abandon",
          "ability",
