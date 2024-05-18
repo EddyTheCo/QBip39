@@ -3,7 +3,7 @@
 
 [TOC]
 
-This repo implements methods to work with mnmonic sentences following [Bip-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
+This repo implements methods to work with mnemonic sentences following [Bip-39](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
 
 ## Installing the library 
 
@@ -13,7 +13,7 @@ git clone https://github.com/EddyTheCo/QBip39.git
 
 mkdir build
 cd build
-qt-cmake -G Ninja -DCMAKE_INSTALL_PREFIX=installDir -DCMAKE_BUILD_TYPE=Release -DBUILD_EXAMPLES=OFF -DBUILD_TESTING=OFF -DBUILD_DOCS=OFF ../QBip39
+qt-cmake -G Ninja -DCMAKE_INSTALL_PREFIX=installDir -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTING=OFF -DBUILD_DOCS=OFF ../QBip39
 
 cmake --build . 
 
