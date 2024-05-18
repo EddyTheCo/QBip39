@@ -4,15 +4,17 @@
 #include <QtCore/QtGlobal>
 
 #if defined(WINDOWS_QBIP39)
-# define QBIP39_EXPORT Q_DECL_EXPORT
+#define QBIP39_EXPORT Q_DECL_EXPORT
 #else
 #define QBIP39_EXPORT Q_DECL_IMPORT
 #endif
 
-namespace qcrypto {
-namespace qwords {
+namespace qcrypto
+{
+namespace qwords
+{
 
-enum Language:quint8
+enum Language : quint8
 {
     En,
     Es,
@@ -21,12 +23,11 @@ enum Language:quint8
     Ko
 };
 
-template<Language lg>
-class Dictionary: public QStringList
+template <Language lg> class Dictionary : public QStringList
 {
-public:
+  public:
     Dictionary();
 };
 
-}
-}
+} // namespace qwords
+} // namespace qcrypto
